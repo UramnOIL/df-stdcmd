@@ -5,7 +5,6 @@ import (
 	"github.com/df-mc/dragonfly/server/entity"
 	"github.com/df-mc/dragonfly/server/entity/damage"
 	"github.com/df-mc/dragonfly/server/player"
-	"github.com/df-mc/dragonfly/server/world"
 )
 
 type KillCommand struct {
@@ -17,8 +16,12 @@ func (c KillCommand) Run(src cmd.Source, o *cmd.Output) {
 
 	// suicide
 	if set == false {
-		p := src.(*player.Player)
-		p.SetGameMode(world.GameModeSurvival)
+		p, ok := src.(*player.Player)
+		// not player. for example, console
+		if !ok {
+			o.Error("Execute commands as the player.")
+			return
+		}
 		p.Hurt(p.MaxHealth(), damage.SourceVoid{})
 		return
 	}
@@ -26,8 +29,12 @@ func (c KillCommand) Run(src cmd.Source, o *cmd.Output) {
 	src.World().Entities()
 
 	// kill other
-	for _, target := range targets {
-		t := target.(entity.Living)
-		t.Hurt(t.MaxHealth(), damage.SourceVoid{})
+	for _, t := range targets {
+		living, ok := t.(entity.Living)	// FIXME not only Living but also Entity
+		if !ok {
+			o.Error("Select living targets")
+			return
+		}
+		living.Hurt(living.MaxHealth(), damage.SourceVoid{})
 	}
 } 
