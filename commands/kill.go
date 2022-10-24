@@ -5,6 +5,7 @@ import (
 	"github.com/df-mc/dragonfly/server/entity"
 	"github.com/df-mc/dragonfly/server/entity/damage"
 	"github.com/df-mc/dragonfly/server/player"
+	"github.com/df-mc/dragonfly/server/world"
 )
 
 type KillCommand struct {
@@ -30,11 +31,10 @@ func (c KillCommand) Run(src cmd.Source, o *cmd.Output) {
 
 	// kill other
 	for _, t := range targets {
-		living, ok := t.(entity.Living)	// FIXME not only Living but also Entity
-		if !ok {
-			o.Error("Select living targets")
-			return
+		if living, ok := t.(entity.Living); ok {
+			living.Hurt(living.MaxHealth(), damage.SourceVoid{})
+		} else {
+			t.(world.Entity).Close()
 		}
-		living.Hurt(living.MaxHealth(), damage.SourceVoid{})
 	}
 } 
