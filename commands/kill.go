@@ -37,4 +37,4 @@ func (c KillCommand) Run(src cmd.Source, o *cmd.Output) {
 			t.(world.Entity).Close()
 		}
 	}
-} 
+}
