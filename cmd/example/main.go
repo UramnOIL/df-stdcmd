@@ -7,7 +7,9 @@ import (
 	"github.com/UramnOIL/df-stdcmd/commands"
 	"github.com/df-mc/dragonfly/server"
 	"github.com/df-mc/dragonfly/server/cmd"
+	"github.com/df-mc/dragonfly/server/player"
 	"github.com/df-mc/dragonfly/server/player/chat"
+	"github.com/df-mc/dragonfly/server/world"
 	"github.com/pelletier/go-toml"
 	"github.com/sirupsen/logrus"
 )
@@ -30,7 +32,9 @@ func main() {
 	cmd.Register(cmd.New("kill", "Commit suicide or kill other players", nil, commands.KillCommand{}))
 
 	srv.Listen()
-	for srv.Accept(nil) {
+	for srv.Accept(func(p *player.Player) {
+		p.SetGameMode(world.GameModeSurvival)
+	}) {
 	}
 }
 
