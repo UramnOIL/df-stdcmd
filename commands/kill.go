@@ -3,7 +3,6 @@ package commands
 import (
 	"github.com/df-mc/dragonfly/server/cmd"
 	"github.com/df-mc/dragonfly/server/entity"
-	"github.com/df-mc/dragonfly/server/entity/damage"
 	"github.com/df-mc/dragonfly/server/player"
 	"github.com/df-mc/dragonfly/server/world"
 )
@@ -23,7 +22,7 @@ func (c KillCommand) Run(src cmd.Source, o *cmd.Output) {
 			o.Error("Execute commands as the player.")
 			return
 		}
-		p.Hurt(p.MaxHealth(), damage.SourceVoid{})
+		p.Hurt(p.MaxHealth(), entity.VoidDamageSource{})
 		return
 	}
 
@@ -32,7 +31,7 @@ func (c KillCommand) Run(src cmd.Source, o *cmd.Output) {
 	// kill other
 	for _, t := range targets {
 		if living, ok := t.(entity.Living); ok {
-			living.Hurt(living.MaxHealth(), damage.SourceVoid{})
+			living.Hurt(living.MaxHealth(), entity.VoidDamageSource{})
 		} else {
 			t.(world.Entity).Close()
 		}
