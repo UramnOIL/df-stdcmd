@@ -29,7 +29,7 @@ func main() {
 	srv := conf.New()
 	srv.CloseOnProgramEnd()
 
-	cmd.Register(cmd.New("kill", "Commit suicide or kill other players", nil, commands.KillCommand{}))
+	cmd.Register(cmd.New("kill", "Commit suicide or kill other players", nil, commands.SuicideCommand{}, commands.KillCommand{}))
 	cmd.Register(cmd.New("tp", "Teleport entites", []string{"tp"}, commands.TeleportToTargetCommand{}, commands.TeleportToCoordinateCommand{}, commands.TeleportVictimToTargetCommand{}, commands.TeleportVictimToCoordinateCommand{}))
 
 	srv.Listen()
