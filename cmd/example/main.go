@@ -30,6 +30,7 @@ func main() {
 	cmd.Register(cmd.New("kill", "Commit suicide or kill other players", nil, commands.SuicideCommand{}, commands.KillCommand{}))
 	cmd.Register(cmd.New("tp", "Teleport entites", []string{"tp"}, commands.TeleportToTargetCommand{}, commands.TeleportToCoordinateCommand{}, commands.TeleportVictimToTargetCommand{}, commands.TeleportVictimToCoordinateCommand{}))
 	cmd.Register(cmd.New("gamemode", "Set players' gamemode", nil, commands.SetMyGameModeFromStringCommand{}, commands.SetMyGameModeFromIntCommand{}, commands.SetTargetGameModeFromStringCommand{}, commands.SetTargetGameModeFromIntCommand{}))
+	cmd.Register(cmd.New("kick", "kick a player off server", nil, commands.KickCommand{}))
 
 	srv.Listen()
 	for srv.Accept(nil) {
